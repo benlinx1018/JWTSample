@@ -35,6 +35,7 @@ namespace JwtDemoDoNetCore
                     .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
+            services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -78,7 +79,12 @@ namespace JwtDemoDoNetCore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
             }
+        
             app.UseAuthentication();
             app.UseMvc();
         }
